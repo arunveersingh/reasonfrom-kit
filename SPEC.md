@@ -36,6 +36,7 @@ A relative path such as `./day-05.md` is invalid. Only the adapter knows the rep
 course/<course-slug>
 lesson/<course-slug>/<lesson-slug>
 skill/<skill-name>
+page/<course-slug>/<page-slug>
 ```
 
 Slugs are kebab-case: `^[a-z0-9]+(-[a-z0-9]+)*$`. Ids are global across all bundles. The site rejects duplicates, and its registry decides which repository may publish which id prefixes.
@@ -95,6 +96,22 @@ Slugs are kebab-case: `^[a-z0-9]+(-[a-z0-9]+)*$`. Ids are global across all bund
 | `source_url` | url | the SKILL.md on GitHub |
 | `evals` | `{ cases, url }`, optional | |
 | `body` | path to `.md` | the skill body, without frontmatter |
+
+### page
+Supporting material that isn't a numbered lesson, such as a start page, a problem-bank entry or an appendix.
+
+| Field | Type | Notes |
+|---|---|---|
+| `id`, `type` | `page/<course>/<slug>`, `"page"` | the slug must not equal a lesson slug of the same course |
+| `course` | course id | must exist in the same bundle |
+| `title` | string | |
+| `description` | string, optional | ≤ 220 chars |
+| `section` | string | the group shown on the course page (e.g. `"Problem bank"`) |
+| `order` | int ≥ 0 | position across all of the course's pages |
+| `source_path` | string, optional | path in the source repo |
+| `body` | path to `.md` | required |
+
+`lesson.source_path` (optional) records where a lesson lives in the source repo, so the site can redirect old URLs and link to the source.
 
 ## Versioning
 

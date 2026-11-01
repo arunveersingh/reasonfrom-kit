@@ -50,7 +50,8 @@
             "enum": [
               "course",
               "lesson",
-              "skill"
+              "skill",
+              "page"
             ],
             "type": "string"
           }

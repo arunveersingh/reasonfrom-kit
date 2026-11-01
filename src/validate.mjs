@@ -134,6 +134,11 @@ export async function validateBundle(dir) {
   }
   const lessonKeys = items.filter((i) => i.type === 'lesson').map((l) => `${l.course}#${l.n}`);
   for (const d of new Set(lessonKeys.filter((k, i) => lessonKeys.indexOf(k) !== i))) err('manifest.json', `two lessons claim ${d}`);
+  for (const pg of items.filter((i) => i.type === 'page')) {
+    if (!byId.has(pg.course) && !invalidIds.has(pg.course)) err(pg._file, `course ${pg.course} is not in this bundle`, ['course']);
+    const slug = pg.id.split('/')[2];
+    if (byId.has(`lesson/${pg.id.split('/')[1]}/${slug}`)) err(pg._file, `page slug "${slug}" collides with a lesson of the same course`, ['id']);
+  }
   for (const c of items.filter((i) => i.type === 'course' && i.cover)) {
     if (!assetSet.has(c.cover)) err(c._file, `cover ${c.cover} is not a bundle asset`, ['cover']);
   }

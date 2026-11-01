@@ -219,3 +219,108 @@ describe('helpers', () => {
     assert.throws(() => parseOutline('# T\n\n**t**\n', 'R'), /no phase table rows/);
   });
 });
+
+describe('curriculum-days', () => {
+  const CUR = `# Curriculum
+
+## Phase 1 — Hearing (Days 1–1)
+
+**Written.** Status line that is not the summary.
+
+Learn to hear the problem.
+
+| Day | Title | Type | Intent |
+|---|---|---|---|
+| 1 | [First](days/01-first.md) | Lesson | Leave able to do the first thing. |
+
+## Phase 2 — Building (Days 2–2)
+
+Build the thing.
+
+| Day | Title | Type | Intent |
+|---|---|---|---|
+| 2 | [Second](days/02-second.md) | Mock | Leave able to do it timed. |
+
+## Optional appendices
+
+Not days.
+`;
+  const day = (n, next) => `<!-- day-nav -->
+[← Start](../START.md) · [Next](${next})
+
+# Day ${n} — Title ${n}
+
+## Time box
+
+${n === 1 ? 35 : 40} minutes.
+
+## Intent
+
+Intent for day ${n}.
+
+![d](assets/day-0${n}.svg) See the [pastebin problem](../prompts/pastebin.md) and the [bank](../prompts/).
+
+---
+
+<!-- day-nav -->
+[← Start](../START.md) · [Next](${next})
+`;
+  const files = () => ({
+    'reasonfrom.yml': `publish: true
+courses:
+  - layout: curriculum-days
+    path: .
+    slug: book
+    title: The Book
+    tagline: Attempt, then read.
+    cover: days/assets/day-01.svg
+    pages:
+      - { path: START.md, section: Start }
+      - { path: prompts, section: Problem bank }
+`,
+    'CURRICULUM.md': CUR,
+    'days/01-first.md': day(1, '02-second.md'),
+    'days/02-second.md': day(2, '../START.md'),
+    'days/assets/day-01.svg': '<svg/>',
+    'days/assets/day-02.svg': '<svg/>',
+    'START.md': '# Start here\n\nRead [Day 1](days/01-first.md) first.\n',
+    'prompts/README.md': '# Problem bank\n\nAll problems.\n',
+    'prompts/pastebin.md': '# Pastebin\n\nStore text.\n',
+  });
+
+  test('builds lessons, pages, and an outline from the curriculum', async () => {
+    const res = await run(files());
+    assert.equal(res.ok, true, msgs(res));
+    const ids = res.manifest.items.map((i) => i.id);
+    assert.deepEqual(ids, ['course/book', 'lesson/book/day-01', 'lesson/book/day-02', 'page/book/prompts', 'page/book/prompts-pastebin', 'page/book/start']);
+    const c = JSON.parse(await read(res.out, 'items/course/book.json'));
+    assert.equal(c.outline.phases[0].question, 'Learn to hear the problem.', 'status line skipped');
+    assert.equal(c.outline.line_label, 'Intent');
+    assert.equal(c.cover, 'book/assets/day-01.svg');
+  });
+
+  test('lessons: nav stripped, time parsed, links internal', async () => {
+    const { out } = await run(files());
+    const body = await read(out, 'items/lesson/book/day-01.md');
+    assert.doesNotMatch(body, /day-nav|← Start/);
+    assert.doesNotMatch(body, /^# Day/m);
+    assert.match(body, /\(rf-asset:book\/assets\/day-01\.svg\)/);
+    assert.match(body, /\(rf:page\/book\/prompts-pastebin\)/);
+    assert.match(body, /\(rf:page\/book\/prompts\)/, 'a directory link resolves to its README page');
+    const l = JSON.parse(await read(out, 'items/lesson/book/day-02.json'));
+    assert.equal(l.time, '40 min');
+    assert.equal(l.description, 'Intent for day 2.');
+    assert.equal(l.source_path, 'days/02-second.md');
+  });
+
+  test('pages link back to lessons', async () => {
+    const { out } = await run(files());
+    assert.match(await read(out, 'items/page/book/start.md'), /\(rf:lesson\/book\/day-01\)/);
+  });
+
+  test('a curriculum row pointing at a missing file fails', async () => {
+    const f = files(); delete f['days/02-second.md'];
+    const res = await run(f);
+    assert.match(msgs(res), /Day 2 links days\/02-second\.md, which does not exist/);
+  });
+});

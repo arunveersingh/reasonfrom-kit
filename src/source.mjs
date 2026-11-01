@@ -11,6 +11,7 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { parse as parseYaml } from 'yaml';
 import { agentSkills } from './adapters/agent-skills.mjs';
+import { curriculumDays } from './adapters/curriculum-days.mjs';
 import { readmeOutline } from './adapters/readme-outline.mjs';
 import { LinkRouter } from './links.mjs';
 import { SourceConfig } from './schema/source-config.mjs';
@@ -68,7 +69,10 @@ export async function buildBundle({ root, out, repo, sha, configPath }) {
   // so a lesson can link to a skill and vice versa.
   const finishers = [];
   try {
-    for (const c of config.courses) finishers.push(await readmeOutline({ root, path: c.path, router, blobBase }));
+    for (const c of config.courses) {
+      if (c.layout === 'readme-outline') finishers.push(await readmeOutline({ root, path: c.path, router, blobBase }));
+      else if (c.layout === 'curriculum-days') finishers.push(await curriculumDays({ root, cfg: c, router, blobBase }));
+    }
     for (const s of config.skills) finishers.push(await agentSkills({ root, path: s.path, evals: s.evals, router, blobBase }));
   } catch (e) {
     return { ok: false, errors: [{ file: '', path: '', message: e.message }], manifest: null };

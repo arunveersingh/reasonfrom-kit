@@ -29,12 +29,13 @@ export const ID = {
   course: /^course\/[a-z0-9]+(-[a-z0-9]+)*$/,
   lesson: /^lesson\/[a-z0-9]+(-[a-z0-9]+)*\/[a-z0-9]+(-[a-z0-9]+)*$/,
   skill: /^skill\/[a-z0-9]+(-[a-z0-9]+)*$/,
+  page: /^page\/[a-z0-9]+(-[a-z0-9]+)*\/[a-z0-9]+(-[a-z0-9]+)*$/,
 };
-export const TYPES = /** @type {const} */ (['course', 'lesson', 'skill']);
+export const TYPES = /** @type {const} */ (['course', 'lesson', 'skill', 'page']);
 const idOf = (type) => z.string().regex(ID[type], `must look like ${type}/…`);
 export const anyId = z.string().refine(
   (v) => TYPES.some((t) => ID[t].test(v)),
-  'must be a course/, lesson/ or skill/ id',
+  'must be a course/, lesson/, skill/ or page/ id',
 );
 
 /* ------------------------------------------------------------ manifest */
@@ -124,6 +125,8 @@ export const Lesson = z.strictObject({
   line: nonEmpty.optional(),
   time: nonEmpty.optional(),
   publish_at: isoDate.optional(),
+  /** Where the lesson lives in the source repo. Lets the site redirect old URLs. */
+  source_path: z.string().optional(),
   body: mdPath,
 }).refine((l) => l.id.split('/')[1] === l.course.split('/')[1], {
   error: 'lesson id must live under its course slug (lesson/<course-slug>/…)', path: ['id'],
@@ -143,7 +146,26 @@ export const Skill = z.strictObject({
   body: mdPath,
 }).refine((s) => s.id === `skill/${s.name}`, { error: 'skill id must be skill/<name>', path: ['id'] });
 
-export const ItemSchemas = { course: Course, lesson: Lesson, skill: Skill };
+/**
+ * Supporting material that is not a numbered lesson: a start page, a problem
+ * bank entry, an appendix. Grouped by `section` on the owning course.
+ */
+export const Page = z.strictObject({
+  id: idOf('page'),
+  type: z.literal('page'),
+  /** The course this page belongs to; must exist in the same bundle. */
+  course: idOf('course'),
+  title: nonEmpty,
+  description: nonEmpty.max(220, 'description must be <= 220 chars').optional(),
+  section: nonEmpty,
+  order: z.number().int().nonnegative(),
+  source_path: z.string().optional(),
+  body: mdPath,
+}).refine((pg) => pg.id.split('/')[1] === pg.course.split('/')[1], {
+  error: 'page id must live under its course slug (page/<course-slug>/…)', path: ['id'],
+});
+
+export const ItemSchemas = { course: Course, lesson: Lesson, skill: Skill, page: Page };
 
 /* --------------------------------------------------------------- prose */
 
