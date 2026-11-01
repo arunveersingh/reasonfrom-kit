@@ -1,6 +1,6 @@
 {
   "name": "reasonfrom-kit",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Publish any repo to reasonfrom.com: bundle contract, validator, and (soon) adapters and preview.",
   "license": "Apache-2.0",
   "author": "Arunveer Singh",
@@ -18,7 +18,9 @@
   "exports": {
     "./schema/v1": "./src/schema/v1.mjs",
     "./validate": "./src/validate.mjs",
-    "./write": "./src/write.mjs"
+    "./write": "./src/write.mjs",
+    "./source": "./src/source.mjs",
+    "./links": "./src/links.mjs"
   },
   "files": [
     "bin",
