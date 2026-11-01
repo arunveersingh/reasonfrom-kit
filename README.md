@@ -8,7 +8,7 @@ Content repos don't need to know how the site works, and the site doesn't need t
 any repo ── reasonfrom-kit ──► bundle (validated, deterministic) ──► reasonfrom.com
 ```
 
-**Status:** contract v1, validator, adapters, CLI and GitHub Action (M1–M2). Local preview (M7) comes later.
+**Status:** contract v1, validator, three adapters (`readme-outline`, `curriculum-days`, `agent-skills`), CLI, GitHub Action, and local preview.
 
 ## The contract
 
@@ -57,6 +57,7 @@ The site builds bundles itself from `{repo, sha}` in its lockfile, so a source r
 npx reasonfrom check <repo-dir>                 # build + validate, leave nothing behind (CI)
 npx reasonfrom bundle <repo-dir> --out DIR      # build + validate, keep the bundle
 npx reasonfrom validate <bundle-dir>            # validate an existing bundle
+npx reasonfrom preview <repo-dir> --site <site> # render locally in the real site design (private ok)
 #   flags: --repo owner/name  --sha <40 hex>  --config <file>
 #   exit 0 valid · 1 invalid · 2 usage
 

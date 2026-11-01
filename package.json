@@ -1,6 +1,6 @@
 {
   "name": "reasonfrom-kit",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Publish any repo to reasonfrom.com: bundle contract, validator, and (soon) adapters and preview.",
   "license": "Apache-2.0",
   "author": "Arunveer Singh",
