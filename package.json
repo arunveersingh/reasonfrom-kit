@@ -1,6 +1,6 @@
 {
   "name": "reasonfrom-kit",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Publish any repo to reasonfrom.com: bundle contract, validator, and (soon) adapters and preview.",
   "license": "Apache-2.0",
   "author": "Arunveer Singh",
@@ -24,17 +24,16 @@
     "bin",
     "src",
     "schema",
-    "SPEC.md"
+    "SPEC.md",
+    "action.yml"
   ],
   "scripts": {
     "test": "node --test \"test/**/*.test.mjs\"",
     "schema": "node scripts/export-json-schema.mjs",
     "example": "node scripts/write-example.mjs"
   },
-  "peerDependencies": {
-    "zod": "4.5.4"
-  },
-  "devDependencies": {
+  "dependencies": {
+    "yaml": "2.9.1",
     "zod": "4.5.4"
   }
 }

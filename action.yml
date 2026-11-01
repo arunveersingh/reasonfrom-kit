@@ -1,0 +1,61 @@
+name: Reason From publish
+description: >
+  Validate this repo's reasonfrom.com bundle on pull requests, and notify the
+  site after a merge to the default branch. Builds nothing that leaves the
+  runner; the site builds its own copy from the commit.
+author: arunveersingh
+branding:
+  icon: book-open
+  color: blue
+
+inputs:
+  mode:
+    description: "check (validate only) or notify (validate, then ping the site)"
+    required: true
+    default: check
+  token:
+    description: >
+      Fine-grained token allowed to send repository_dispatch to the site repo.
+      Optional: without it, notify is skipped and the site's scheduled sync
+      picks the change up instead.
+    required: false
+    default: ""
+  site-repo:
+    description: The site repository to notify.
+    required: false
+    default: arunveersingh/arunveersingh.github.io
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v7
+      with:
+        node-version: 22
+
+    - name: Install reasonfrom-kit
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: npm ci --omit=dev --no-audit --no-fund
+
+    - name: Validate bundle
+      shell: bash
+      run: |
+        node "${{ github.action_path }}/bin/reasonfrom.mjs" check "${{ github.workspace }}" \
+          --repo "${{ github.repository }}" --sha "${{ github.sha }}"
+
+    - name: Notify site
+      if: inputs.mode == 'notify'
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        SITE: ${{ inputs.site-repo }}
+      run: |
+        if [ -z "$GH_TOKEN" ]; then
+          echo "::notice::No token given; the site's scheduled sync will pick up ${{ github.sha }}."
+          exit 0
+        fi
+        gh api "repos/$SITE/dispatches" \
+          -f event_type=reasonfrom-source-updated \
+          -f "client_payload[repo]=${{ github.repository }}" \
+          -f "client_payload[sha]=${{ github.sha }}"
+        echo "Notified $SITE about ${{ github.repository }}@${{ github.sha }}"

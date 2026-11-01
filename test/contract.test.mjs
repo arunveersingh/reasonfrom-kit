@@ -8,7 +8,7 @@ import { stableJson, writeBundle } from '../src/write.mjs';
 import { clone, validInput } from './fixture.mjs';
 
 // Scratch space lives inside the repo (gitignored), never in the OS temp dir.
-const TMP = join(dirname(fileURLToPath(import.meta.url)), '.tmp');
+const TMP = join(dirname(fileURLToPath(import.meta.url)), '.tmp', 'contract');
 let n = 0;
 const fresh = () => join(TMP, `b${process.pid}-${n++}`);
 after(() => rm(TMP, { recursive: true, force: true }));

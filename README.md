@@ -8,7 +8,7 @@ Content repos don't need to know how the site works, and the site doesn't need t
 any repo ── reasonfrom-kit ──► bundle (validated, deterministic) ──► reasonfrom.com
 ```
 
-**Status:** contract v1 and its validator (milestone M1). Adapters and the GitHub Action (M2) and local preview (M7) come next.
+**Status:** contract v1, validator, adapters, CLI and GitHub Action (M1–M2). Local preview (M7) comes later.
 
 ## The contract
 
@@ -21,14 +21,48 @@ Read **[SPEC.md](./SPEC.md)**. In short:
 
 The authoritative schema is [`src/schema/v1.mjs`](./src/schema/v1.mjs) (zod). [`schema/v1/*.json`](./schema/v1/) is generated JSON Schema for editors and docs. A valid example is in [`examples/minimal/`](./examples/minimal/).
 
-## Use
+## Publish a repo
+
+**1. Opt in** by committing `reasonfrom.yml` at the repo root:
+
+```yaml
+publish: true
+courses:
+  - layout: readme-outline          # README outline + day-NN.md lessons
+    path: courses/make-ai-fail-safely
+skills:
+  - layout: agent-skills            # <path>/<name>/SKILL.md (Agent Skills spec)
+    path: skills
+    evals: evals/skills             # optional: <name>.md case files
+```
+
+**2. Add the workflow.** Copy [`examples/source-workflow.yml`](./examples/source-workflow.yml) to `.github/workflows/reasonfrom.yml`. A PR fails if its content would not publish cleanly, and a merge to `main` notifies the site.
+
+**3. Merge.** The site builds the bundle from your commit, renders it in the site design, and deploys.
+
+## How the pieces fit
+
+| Piece | Job |
+|---|---|
+| **Adapters** (`src/adapters/`) | Turn a repo layout into contract items. `readme-outline` reproduces the site's old `sync-course.mjs` output exactly: 240 of 240 fields, bodies and assets identical on the real course. `agent-skills` reads `SKILL.md` frontmatter |
+| **Link router** (`src/links.mjs`) | Relative links become `rf:` (to an item), `rf-asset:` (to a file) or an absolute GitHub URL. **A broken relative link fails the PR** |
+| **Validator** | Checks the result against the contract |
+| **Action** (`action.yml`) | Runs the check on PRs and notifies the site on merge |
+
+The site builds bundles itself from `{repo, sha}` in its lockfile, so a source repo never uploads anything. Because bundles are deterministic, the site's build is as reproducible as a stored artifact would be.
+
+## CLI
 
 ```bash
-npm install
-npx reasonfrom validate path/to/bundle     # exit 0 valid · 1 invalid · 2 usage
-npm test                                    # contract tests
-npm run schema                              # regenerate schema/v1/*.json
-npm run example                             # regenerate examples/minimal/
+npx reasonfrom check <repo-dir>                 # build + validate, leave nothing behind (CI)
+npx reasonfrom bundle <repo-dir> --out DIR      # build + validate, keep the bundle
+npx reasonfrom validate <bundle-dir>            # validate an existing bundle
+#   flags: --repo owner/name  --sha <40 hex>  --config <file>
+#   exit 0 valid · 1 invalid · 2 usage
+
+npm test            # 49 contract + adapter tests
+npm run schema      # regenerate schema/v1/*.json
+npm run example     # regenerate examples/minimal/
 ```
 
 ## Privacy

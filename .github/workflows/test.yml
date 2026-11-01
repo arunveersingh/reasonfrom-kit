@@ -1,0 +1,26 @@
+name: test
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - name: Example bundle is valid and up to date
+        run: |
+          npm run -s example
+          git diff --exit-code examples/
+      - name: JSON Schema export is up to date
+        run: |
+          npm run -s schema
+          git diff --exit-code schema/
