@@ -118,7 +118,7 @@ describe('item schemas', () => {
   });
 
   test('id slugs must be kebab-case', async () => {
-    await expectInvalid(await build((i) => { item(i, 'skill/mirror-test').meta.id = 'skill/Mirror_Test'; }), 'must be a course/, lesson/ or skill/ id');
+    await expectInvalid(await build((i) => { item(i, 'skill/mirror-test').meta.id = 'skill/Mirror_Test'; }), 'must be a course/, lesson/, skill/ or page/ id');
   });
 
   test('skill id must equal skill/<name>', async () => {
