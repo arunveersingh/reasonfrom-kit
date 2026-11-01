@@ -1,0 +1,11 @@
+{
+  "body": "items/lesson/fail-safely/day-02.md",
+  "course": "course/fail-safely",
+  "description": "Unstated premises become facts.",
+  "id": "lesson/fail-safely/day-02",
+  "n": 2,
+  "phase": "Failures",
+  "publish_at": "2026-12-01",
+  "title": "Day 2 — Silent Assumptions",
+  "type": "lesson"
+}

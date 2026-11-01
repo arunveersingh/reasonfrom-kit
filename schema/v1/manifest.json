@@ -1,0 +1,109 @@
+{
+  "$comment": "Generated from src/schema/v1.mjs. Cross-field rules are enforced by `reasonfrom validate`, not here.",
+  "$id": "https://github.com/arunveersingh/reasonfrom-kit/schema/v1/manifest.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "assets": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "bytes": {
+            "maximum": 9007199254740991,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "path": {
+            "pattern": "^(?!\\/)(?!.*(^|\\/)\\.\\.(\\/|$))[A-Za-z0-9._\\-/]+$",
+            "type": "string"
+          },
+          "sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "sha256",
+          "bytes"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "items": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "meta": {
+            "pattern": "^(?!\\/)(?!.*(^|\\/)\\.\\.(\\/|$))[A-Za-z0-9._\\-/]+$",
+            "type": "string"
+          },
+          "sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "course",
+              "lesson",
+              "skill"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "meta",
+          "sha256"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "publish": {
+      "const": true,
+      "type": "boolean"
+    },
+    "schema": {
+      "const": 1,
+      "type": "number"
+    },
+    "source": {
+      "additionalProperties": false,
+      "properties": {
+        "repo": {
+          "pattern": "^[A-Za-z0-9_.-]+\\/[A-Za-z0-9_.-]+$",
+          "type": "string"
+        },
+        "sha": {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        "url": {
+          "format": "uri",
+          "type": "string"
+        }
+      },
+      "required": [
+        "repo",
+        "sha",
+        "url"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema",
+    "publish",
+    "source",
+    "items",
+    "assets"
+  ],
+  "type": "object"
+}

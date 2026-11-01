@@ -1,0 +1,65 @@
+{
+  "$comment": "Generated from src/schema/v1.mjs. Cross-field rules are enforced by `reasonfrom validate`, not here.",
+  "$id": "https://github.com/arunveersingh/reasonfrom-kit/schema/v1/lesson.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "body": {
+      "pattern": "^(?!\\/)(?!.*(^|\\/)\\.\\.(\\/|$))[A-Za-z0-9._\\-/]+$",
+      "type": "string"
+    },
+    "course": {
+      "pattern": "^course\\/[a-z0-9]+(-[a-z0-9]+)*$",
+      "type": "string"
+    },
+    "description": {
+      "maxLength": 220,
+      "minLength": 1,
+      "type": "string"
+    },
+    "id": {
+      "pattern": "^lesson\\/[a-z0-9]+(-[a-z0-9]+)*\\/[a-z0-9]+(-[a-z0-9]+)*$",
+      "type": "string"
+    },
+    "line": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "n": {
+      "exclusiveMinimum": 0,
+      "maximum": 9007199254740991,
+      "type": "integer"
+    },
+    "phase": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "publish_at": {
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "type": "string"
+    },
+    "time": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "title": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "type": {
+      "const": "lesson",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "type",
+    "course",
+    "n",
+    "title",
+    "description",
+    "phase",
+    "body"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,45 @@
+{
+  "cover": "fail-safely/day-01.svg",
+  "id": "course/fail-safely",
+  "outline": {
+    "entries": [
+      {
+        "line": "False claim, sure tone",
+        "n": 1,
+        "phase": "Failures",
+        "title": "Confident Wrongness"
+      },
+      {
+        "line": "Premises become facts",
+        "n": 2,
+        "phase": "Failures",
+        "title": "Silent Assumptions"
+      },
+      {
+        "line": "The grader is the author",
+        "n": 3,
+        "phase": "Guardrails",
+        "title": "Self-Graded Green"
+      }
+    ],
+    "line_label": "Failure",
+    "phases": [
+      {
+        "from": 1,
+        "label": "Failures",
+        "question": "What broke?",
+        "to": 2
+      },
+      {
+        "from": 3,
+        "label": "Guardrails",
+        "to": 3
+      }
+    ],
+    "unit": "day"
+  },
+  "source_url": "https://github.com/arunveersingh/example/tree/main/course",
+  "tagline": "Mechanisms, not pep talks.",
+  "title": "Fail Safely",
+  "type": "course"
+}

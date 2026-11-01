@@ -1,0 +1,47 @@
+{
+  "assets": [
+    {
+      "bytes": 42,
+      "path": "fail-safely/day-01.svg",
+      "sha256": "fb91f9a03c202c5f160eef644da6f2f704b19ac5c5f8b4c124e1b0b485ad57a0"
+    },
+    {
+      "bytes": 4,
+      "path": "fail-safely/slides/slide-1.png",
+      "sha256": "0f4636c78f65d3639ece5a064b5ae753e3408614a14fb18ab4d7540d2c248543"
+    }
+  ],
+  "items": [
+    {
+      "id": "course/fail-safely",
+      "meta": "items/course/fail-safely.json",
+      "sha256": "89137f642982e04c2ec87ec0298e4c6e6ab413f59c60635d7607ee3ce5bedd4b",
+      "type": "course"
+    },
+    {
+      "id": "lesson/fail-safely/day-01",
+      "meta": "items/lesson/fail-safely/day-01.json",
+      "sha256": "204406ea4d2c672f2f81609724ced8b50f923d1b421a3df1d0482a5badd37df0",
+      "type": "lesson"
+    },
+    {
+      "id": "lesson/fail-safely/day-02",
+      "meta": "items/lesson/fail-safely/day-02.json",
+      "sha256": "66da4659afdd99aaa389d43c368db4f1bc99ffaf17ec96352090c2df34bcb803",
+      "type": "lesson"
+    },
+    {
+      "id": "skill/mirror-test",
+      "meta": "items/skill/mirror-test.json",
+      "sha256": "fe6476e95e17915fb75df4a22557ee168c07a24f43d3e28a893c0f2702304f95",
+      "type": "skill"
+    }
+  ],
+  "publish": true,
+  "schema": 1,
+  "source": {
+    "repo": "arunveersingh/example",
+    "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "url": "https://github.com/arunveersingh/example"
+  }
+}

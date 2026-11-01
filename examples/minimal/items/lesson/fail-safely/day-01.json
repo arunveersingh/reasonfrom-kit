@@ -1,0 +1,12 @@
+{
+  "body": "items/lesson/fail-safely/day-01.md",
+  "course": "course/fail-safely",
+  "description": "A false claim arrives in the same tone as a true one.",
+  "id": "lesson/fail-safely/day-01",
+  "line": "False claim, sure tone",
+  "n": 1,
+  "phase": "Failures",
+  "time": "~15 min",
+  "title": "Day 1 — Confident Wrongness",
+  "type": "lesson"
+}

@@ -1,0 +1,16 @@
+{
+  "body": "items/skill/mirror-test.md",
+  "description": "Re-asks a question with your belief removed, then reversed.",
+  "evals": {
+    "cases": 5,
+    "url": "https://github.com/arunveersingh/example/blob/main/evals/skills/mirror-test.md"
+  },
+  "id": "skill/mirror-test",
+  "license": "Apache-2.0",
+  "name": "mirror-test",
+  "resource": "truth",
+  "source_url": "https://github.com/arunveersingh/example/blob/main/skills/mirror-test/SKILL.md",
+  "symptom": "The AI agrees with whatever framing you bring.",
+  "type": "skill",
+  "version": "1.0"
+}

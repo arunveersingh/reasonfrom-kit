@@ -1,0 +1,92 @@
+{
+  "$comment": "Generated from src/schema/v1.mjs. Cross-field rules are enforced by `reasonfrom validate`, not here.",
+  "$id": "https://github.com/arunveersingh/reasonfrom-kit/schema/v1/skill.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "body": {
+      "pattern": "^(?!\\/)(?!.*(^|\\/)\\.\\.(\\/|$))[A-Za-z0-9._\\-/]+$",
+      "type": "string"
+    },
+    "description": {
+      "maxLength": 1024,
+      "minLength": 1,
+      "type": "string"
+    },
+    "evals": {
+      "additionalProperties": false,
+      "properties": {
+        "cases": {
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "url": {
+          "format": "uri",
+          "type": "string"
+        }
+      },
+      "required": [
+        "cases",
+        "url"
+      ],
+      "type": "object"
+    },
+    "id": {
+      "pattern": "^skill\\/[a-z0-9]+(-[a-z0-9]+)*$",
+      "type": "string"
+    },
+    "license": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "name": {
+      "maxLength": 64,
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "type": "string"
+    },
+    "resource": {
+      "enum": [
+        "truth",
+        "ownership",
+        "intent",
+        "attention",
+        "authority",
+        "capability",
+        "originality",
+        "self",
+        "meta"
+      ],
+      "type": "string"
+    },
+    "source_url": {
+      "format": "uri",
+      "type": "string"
+    },
+    "symptom": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "type": {
+      "const": "skill",
+      "type": "string"
+    },
+    "version": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "type",
+    "name",
+    "description",
+    "version",
+    "resource",
+    "symptom",
+    "license",
+    "source_url",
+    "body"
+  ],
+  "type": "object"
+}

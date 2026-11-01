@@ -1,0 +1,40 @@
+{
+  "name": "reasonfrom-kit",
+  "version": "0.1.0",
+  "description": "Publish any repo to reasonfrom.com: bundle contract, validator, and (soon) adapters and preview.",
+  "license": "Apache-2.0",
+  "author": "Arunveer Singh",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arunveersingh/reasonfrom-kit"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "bin": {
+    "reasonfrom": "bin/reasonfrom.mjs"
+  },
+  "exports": {
+    "./schema/v1": "./src/schema/v1.mjs",
+    "./validate": "./src/validate.mjs",
+    "./write": "./src/write.mjs"
+  },
+  "files": [
+    "bin",
+    "src",
+    "schema",
+    "SPEC.md"
+  ],
+  "scripts": {
+    "test": "node --test \"test/**/*.test.mjs\"",
+    "schema": "node scripts/export-json-schema.mjs",
+    "example": "node scripts/write-example.mjs"
+  },
+  "peerDependencies": {
+    "zod": "4.5.4"
+  },
+  "devDependencies": {
+    "zod": "4.5.4"
+  }
+}
