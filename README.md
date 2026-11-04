@@ -10,6 +10,10 @@ any repo ── reasonfrom-kit ──► bundle (validated, deterministic) ─�
 
 **Status:** contract v1, validator, three adapters (`readme-outline`, `curriculum-days`, `agent-skills`), CLI, GitHub Action, and local preview.
 
+## Operating the whole system
+
+Architecture, automation, and how to set everything up on a new machine: **[docs/SYSTEM.md in the site repo](https://github.com/arunveersingh/arunveersingh.github.io/blob/main/docs/SYSTEM.md)**.
+
 ## The contract
 
 Read **[SPEC.md](./SPEC.md)**. In short:
